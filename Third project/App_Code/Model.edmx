@@ -1,0 +1,567 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="blogModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="blogModelStoreContainer">
+          <EntitySet Name="blog" EntityType="blogModel.Store.blog" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="comment2" EntityType="blogModel.Store.comment2" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="comments" EntityType="blogModel.Store.comments" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="picture" EntityType="blogModel.Store.picture" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="users" EntityType="blogModel.Store.users" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="blog_c" EntityType="blogModel.Store.blog_c" store:Type="Views" store:Schema="dbo" store:Name="blog_c">
+            <DefiningQuery>SELECT 
+      [blog_c].[ID] AS [ID], 
+      [blog_c].[articleID] AS [articleID], 
+      [blog_c].[accountID] AS [accountID], 
+      [blog_c].[time] AS [time], 
+      [blog_c].[name1] AS [name1], 
+      [blog_c].[text] AS [text]
+      FROM [dbo].[blog_c] AS [blog_c]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="blog_user" EntityType="blogModel.Store.blog_user" store:Type="Views" store:Schema="dbo" store:Name="blog_user">
+            <DefiningQuery>SELECT 
+      [blog_user].[ID] AS [ID], 
+      [blog_user].[title] AS [title], 
+      [blog_user].[describe] AS [describe], 
+      [blog_user].[text] AS [text], 
+      [blog_user].[name1] AS [name1], 
+      [blog_user].[time] AS [time], 
+      [blog_user].[StudentID] AS [StudentID]
+      FROM [dbo].[blog_user] AS [blog_user]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="picture_u" EntityType="blogModel.Store.picture_u" store:Type="Views" store:Schema="dbo" store:Name="picture_u">
+            <DefiningQuery>SELECT 
+      [picture_u].[ID] AS [ID], 
+      [picture_u].[files] AS [files], 
+      [picture_u].[time] AS [time], 
+      [picture_u].[accountID] AS [accountID], 
+      [picture_u].[name1] AS [name1]
+      FROM [dbo].[picture_u] AS [picture_u]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_blog_users" Association="blogModel.Store.FK_blog_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="blog" EntitySet="blog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_comment2_comments" Association="blogModel.Store.FK_comment2_comments">
+            <End Role="comments" EntitySet="comments" />
+            <End Role="comment2" EntitySet="comment2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_comments_blog" Association="blogModel.Store.FK_comments_blog">
+            <End Role="blog" EntitySet="blog" />
+            <End Role="comments" EntitySet="comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_comments_users" Association="blogModel.Store.FK_comments_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="comments" EntitySet="comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_picture_users" Association="blogModel.Store.FK_picture_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="picture" EntitySet="picture" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="blog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="describe" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="text" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="StudentID" Type="int" Nullable="false" />
+          <Property Name="time" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="comment2">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="commentID" Type="int" Nullable="false" />
+          <Property Name="accountID" Type="int" Nullable="false" />
+          <Property Name="time" Type="datetime" Nullable="false" />
+          <Property Name="text" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="comments">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="articleID" Type="int" Nullable="false" />
+          <Property Name="accountID" Type="int" Nullable="false" />
+          <Property Name="time" Type="datetime" Nullable="false" />
+          <Property Name="text" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="picture">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="files" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="accountID" Type="int" Nullable="false" />
+          <Property Name="time" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="account" Type="char" Nullable="false" MaxLength="20" />
+          <Property Name="password" Type="char" Nullable="false" MaxLength="20" />
+          <Property Name="name1" Type="nchar" Nullable="false" MaxLength="10" />
+        </EntityType>
+        <!--生成过程中发现错误:
+      警告 6002: 表/视图“blog.dbo.blog_c”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
+      -->
+        <EntityType Name="blog_c">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="articleID" />
+            <PropertyRef Name="accountID" />
+            <PropertyRef Name="time" />
+            <PropertyRef Name="name1" />
+            <PropertyRef Name="text" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="articleID" Type="int" Nullable="false" />
+          <Property Name="accountID" Type="int" Nullable="false" />
+          <Property Name="time" Type="datetime" Nullable="false" />
+          <Property Name="name1" Type="nchar" Nullable="false" MaxLength="10" />
+          <Property Name="text" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
+      警告 6002: 表/视图“blog.dbo.blog_user”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
+      -->
+        <EntityType Name="blog_user">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="title" />
+            <PropertyRef Name="describe" />
+            <PropertyRef Name="text" />
+            <PropertyRef Name="name1" />
+            <PropertyRef Name="time" />
+            <PropertyRef Name="StudentID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="title" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="describe" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="text" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="name1" Type="nchar" Nullable="false" MaxLength="10" />
+          <Property Name="time" Type="datetime" Nullable="false" />
+          <Property Name="StudentID" Type="int" Nullable="false" />
+        </EntityType>
+        <!--生成过程中发现错误:
+      警告 6002: 表/视图“blog.dbo.picture_u”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
+      -->
+        <EntityType Name="picture_u">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="files" />
+            <PropertyRef Name="time" />
+            <PropertyRef Name="accountID" />
+            <PropertyRef Name="name1" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="files" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="time" Type="datetime" Nullable="false" />
+          <Property Name="accountID" Type="int" Nullable="false" />
+          <Property Name="name1" Type="nchar" Nullable="false" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK_blog_users">
+          <End Role="users" Type="blogModel.Store.users" Multiplicity="1" />
+          <End Role="blog" Type="blogModel.Store.blog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="blog">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_comment2_comments">
+          <End Role="comments" Type="blogModel.Store.comments" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="comment2" Type="blogModel.Store.comment2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="comments">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="comment2">
+              <PropertyRef Name="commentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_comments_blog">
+          <End Role="blog" Type="blogModel.Store.blog" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="comments" Type="blogModel.Store.comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="blog">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="comments">
+              <PropertyRef Name="articleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_comments_users">
+          <End Role="users" Type="blogModel.Store.users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="comments" Type="blogModel.Store.comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="comments">
+              <PropertyRef Name="accountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_picture_users">
+          <End Role="users" Type="blogModel.Store.users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="picture" Type="blogModel.Store.picture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="picture">
+              <PropertyRef Name="accountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="blogModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="blogEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="blog" EntityType="blogModel.blog" />
+          <EntitySet Name="comment2" EntityType="blogModel.comment2" />
+          <EntitySet Name="comments" EntityType="blogModel.comments" />
+          <EntitySet Name="picture" EntityType="blogModel.picture" />
+          <EntitySet Name="users" EntityType="blogModel.users" />
+          <EntitySet Name="blog_c" EntityType="blogModel.blog_c" />
+          <EntitySet Name="blog_user" EntityType="blogModel.blog_user" />
+          <EntitySet Name="picture_u" EntityType="blogModel.picture_u" />
+          <AssociationSet Name="FK_blog_users" Association="blogModel.FK_blog_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="blog" EntitySet="blog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_comments_blog" Association="blogModel.FK_comments_blog">
+            <End Role="blog" EntitySet="blog" />
+            <End Role="comments" EntitySet="comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_comment2_comments" Association="blogModel.FK_comment2_comments">
+            <End Role="comments" EntitySet="comments" />
+            <End Role="comment2" EntitySet="comment2" />
+          </AssociationSet>
+          <AssociationSet Name="FK_comments_users" Association="blogModel.FK_comments_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="comments" EntitySet="comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_picture_users" Association="blogModel.FK_picture_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="picture" EntitySet="picture" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="blog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="describe" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="text" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="StudentID" Type="Int32" Nullable="false" />
+          <Property Name="time" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="users" Relationship="blogModel.FK_blog_users" FromRole="blog" ToRole="users" />
+          <NavigationProperty Name="comments" Relationship="blogModel.FK_comments_blog" FromRole="blog" ToRole="comments" />
+        </EntityType>
+        <EntityType Name="comment2">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="commentID" Type="Int32" Nullable="false" />
+          <Property Name="accountID" Type="Int32" Nullable="false" />
+          <Property Name="time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="text" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="comments" Relationship="blogModel.FK_comment2_comments" FromRole="comment2" ToRole="comments" />
+        </EntityType>
+        <EntityType Name="comments">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="articleID" Type="Int32" Nullable="false" />
+          <Property Name="accountID" Type="Int32" Nullable="false" />
+          <Property Name="time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="text" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="blog" Relationship="blogModel.FK_comments_blog" FromRole="comments" ToRole="blog" />
+          <NavigationProperty Name="comment2" Relationship="blogModel.FK_comment2_comments" FromRole="comments" ToRole="comment2" />
+          <NavigationProperty Name="users" Relationship="blogModel.FK_comments_users" FromRole="comments" ToRole="users" />
+        </EntityType>
+        <EntityType Name="picture">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="files" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="accountID" Type="Int32" Nullable="false" />
+          <Property Name="time" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="users" Relationship="blogModel.FK_picture_users" FromRole="picture" ToRole="users" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="account" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="true" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="true" />
+          <Property Name="name1" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="true" />
+          <NavigationProperty Name="blog" Relationship="blogModel.FK_blog_users" FromRole="users" ToRole="blog" />
+          <NavigationProperty Name="comments" Relationship="blogModel.FK_comments_users" FromRole="users" ToRole="comments" />
+          <NavigationProperty Name="picture" Relationship="blogModel.FK_picture_users" FromRole="users" ToRole="picture" />
+        </EntityType>
+        <EntityType Name="blog_c">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="articleID" />
+            <PropertyRef Name="accountID" />
+            <PropertyRef Name="time" />
+            <PropertyRef Name="name1" />
+            <PropertyRef Name="text" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="articleID" Type="Int32" Nullable="false" />
+          <Property Name="accountID" Type="Int32" Nullable="false" />
+          <Property Name="time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="name1" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="true" />
+          <Property Name="text" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="blog_user">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="title" />
+            <PropertyRef Name="describe" />
+            <PropertyRef Name="text" />
+            <PropertyRef Name="name1" />
+            <PropertyRef Name="time" />
+            <PropertyRef Name="StudentID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="title" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="describe" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="text" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="name1" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="true" />
+          <Property Name="time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="StudentID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="picture_u">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="files" />
+            <PropertyRef Name="time" />
+            <PropertyRef Name="accountID" />
+            <PropertyRef Name="name1" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="files" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="accountID" Type="Int32" Nullable="false" />
+          <Property Name="name1" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="true" />
+        </EntityType>
+        <Association Name="FK_blog_users">
+          <End Role="users" Type="blogModel.users" Multiplicity="1" />
+          <End Role="blog" Type="blogModel.blog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="blog">
+              <PropertyRef Name="StudentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_comments_blog">
+          <End Role="blog" Type="blogModel.blog" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="comments" Type="blogModel.comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="blog">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="comments">
+              <PropertyRef Name="articleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_comment2_comments">
+          <End Role="comments" Type="blogModel.comments" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="comment2" Type="blogModel.comment2" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="comments">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="comment2">
+              <PropertyRef Name="commentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_comments_users">
+          <End Role="users" Type="blogModel.users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="comments" Type="blogModel.comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="comments">
+              <PropertyRef Name="accountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_picture_users">
+          <End Role="users" Type="blogModel.users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="picture" Type="blogModel.picture" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="picture">
+              <PropertyRef Name="accountID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="blogModelStoreContainer" CdmEntityContainer="blogEntities">
+          <EntitySetMapping Name="blog">
+            <EntityTypeMapping TypeName="blogModel.blog">
+              <MappingFragment StoreEntitySet="blog">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="describe" ColumnName="describe" />
+                <ScalarProperty Name="text" ColumnName="text" />
+                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+                <ScalarProperty Name="time" ColumnName="time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="comment2">
+            <EntityTypeMapping TypeName="blogModel.comment2">
+              <MappingFragment StoreEntitySet="comment2">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="commentID" ColumnName="commentID" />
+                <ScalarProperty Name="accountID" ColumnName="accountID" />
+                <ScalarProperty Name="time" ColumnName="time" />
+                <ScalarProperty Name="text" ColumnName="text" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="comments">
+            <EntityTypeMapping TypeName="blogModel.comments">
+              <MappingFragment StoreEntitySet="comments">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="articleID" ColumnName="articleID" />
+                <ScalarProperty Name="accountID" ColumnName="accountID" />
+                <ScalarProperty Name="time" ColumnName="time" />
+                <ScalarProperty Name="text" ColumnName="text" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="picture">
+            <EntityTypeMapping TypeName="blogModel.picture">
+              <MappingFragment StoreEntitySet="picture">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="files" ColumnName="files" />
+                <ScalarProperty Name="accountID" ColumnName="accountID" />
+                <ScalarProperty Name="time" ColumnName="time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="blogModel.users">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="account" ColumnName="account" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="name1" ColumnName="name1" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="blog_c">
+            <EntityTypeMapping TypeName="blogModel.blog_c">
+              <MappingFragment StoreEntitySet="blog_c">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="articleID" ColumnName="articleID" />
+                <ScalarProperty Name="accountID" ColumnName="accountID" />
+                <ScalarProperty Name="time" ColumnName="time" />
+                <ScalarProperty Name="name1" ColumnName="name1" />
+                <ScalarProperty Name="text" ColumnName="text" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="blog_user">
+            <EntityTypeMapping TypeName="blogModel.blog_user">
+              <MappingFragment StoreEntitySet="blog_user">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="describe" ColumnName="describe" />
+                <ScalarProperty Name="text" ColumnName="text" />
+                <ScalarProperty Name="name1" ColumnName="name1" />
+                <ScalarProperty Name="time" ColumnName="time" />
+                <ScalarProperty Name="StudentID" ColumnName="StudentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="picture_u">
+            <EntityTypeMapping TypeName="blogModel.picture_u">
+              <MappingFragment StoreEntitySet="picture_u">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="files" ColumnName="files" />
+                <ScalarProperty Name="time" ColumnName="time" />
+                <ScalarProperty Name="accountID" ColumnName="accountID" />
+                <ScalarProperty Name="name1" ColumnName="name1" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
