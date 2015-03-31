@@ -13,15 +13,10 @@ public partial class home : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
             if (Session["id"] != null)
-            {
-                //string select = "SELECT name1 FROM users WHERE ID =" + Session["id"];
-                //DataSet ds = admin.DataS(select);
-                //name.Text = ds.Tables[0].Rows[0][0].ToString() + "  欢迎你！";
-                using (var db = new blogEntities())
-                {
-                    int id2 = Convert.ToInt32(Session["id"].ToString());
-                    name.Text = db.users.SingleOrDefault(a=>a.ID==id2).name1 + "欢迎你！";
-                }
+            {                
+                string select = "SELECT name1 FROM users WHERE ID =" + Session["id"];
+                DataSet ds = admin.DataS(select);
+                name.Text = ds.Tables[0].Rows[0][0].ToString() + "  欢迎你！";
                 login1.Text = "注销";
                 name.Visible = true;
                 enter1.Visible = true;
@@ -36,13 +31,7 @@ public partial class home : System.Web.UI.Page
                 register.Visible = true;
             }
          PagedDataSource pds = new PagedDataSource();
-         using (var db = new blogEntities())
-         {
-             pds.DataSource = (from it in db.blog_user
-                               orderby  it.time descending
-                               select it).ToList();
-             
-         }
+         pds.DataSource = admin.DataT("SELECT * FROM blog_user ORDER BY time DESC").DefaultView;
          pds.AllowPaging = true;
          pds.PageSize = 3;
          if (!Page.IsPostBack)
@@ -69,13 +58,9 @@ public partial class home : System.Web.UI.Page
                 try
                 {
                     result = 1;
-                    //string select = "SELECT *FROM users WHERE account ='" + account.Text + "'AND password ='" + password.Text + "'";
-                    //DataSet ds = admin.DataS(select);
-                    //Session["id"] = ds.Tables[0].Rows[0][0].ToString();
-                    using (var db = new blogEntities())
-                    {
-                        Session["id"] = db.users.SingleOrDefault(it => it.account == account.Text && it.password == password.Text).ID.ToString();
-                    }
+                    string select = "SELECT *FROM users WHERE account ='" + account.Text + "'AND password ='" + password.Text + "'";
+                    DataSet ds = admin.DataS(select);
+                    Session["id"] = ds.Tables[0].Rows[0][0].ToString();
                 }
                 catch { result = 0; }
                 if (result == 1)
@@ -99,13 +84,7 @@ public partial class home : System.Web.UI.Page
     protected void first_page_Click(object sender, EventArgs e)
     {
         PagedDataSource pds = new PagedDataSource();
-        using (var db = new blogEntities())
-        {
-            pds.DataSource = (from it in db.blog_user
-                              orderby it.time descending
-                              select it).ToList();
-
-        }
+        pds.DataSource = admin.DataT("SELECT * FROM blog_user ORDER BY time DESC").DefaultView;
         pds.AllowPaging = true;
         pds.PageSize = 3;
         pds.CurrentPageIndex = 0;
@@ -116,13 +95,7 @@ public partial class home : System.Web.UI.Page
     protected void final_page_Click(object sender, EventArgs e)
     {
         PagedDataSource pds = new PagedDataSource();
-        using (var db = new blogEntities())
-        {
-            pds.DataSource = (from it in db.blog_user
-                              orderby it.time descending
-                              select it).ToList();
-
-        }
+        pds.DataSource = admin.DataT("SELECT * FROM blog_user ORDER BY time DESC").DefaultView;
         pds.AllowPaging = true;
         pds.PageSize = 3;
         for (n = 0; pds.IsLastPage != true; n++)
@@ -138,13 +111,7 @@ public partial class home : System.Web.UI.Page
     protected void last_page_Click(object sender, EventArgs e)          //上一页
     {
         PagedDataSource pds = new PagedDataSource();
-        using (var db = new blogEntities())
-        {
-            pds.DataSource = (from it in db.blog_user
-                              orderby it.time descending
-                              select it).ToList();
-
-        }
+        pds.DataSource = admin.DataT("SELECT * FROM blog_user ORDER BY time DESC").DefaultView;
         pds.AllowPaging = true;
         pds.PageSize = 3;
         if (n != 0)
@@ -162,13 +129,7 @@ public partial class home : System.Web.UI.Page
     {
 
         PagedDataSource pds = new PagedDataSource();
-        using (var db = new blogEntities())
-        {
-            pds.DataSource = (from it in db.blog_user
-                              orderby it.time descending
-                              select it).ToList();
-
-        }
+        pds.DataSource = admin.DataT("SELECT * FROM blog_user ORDER BY time DESC").DefaultView;
         pds.AllowPaging = true;
         pds.PageSize = 3;
         int m;
