@@ -14,14 +14,9 @@ public partial class allpicture : System.Web.UI.Page
 
         if (Session["id"] != null)
         {
-            //string select = "SELECT name1 FROM users WHERE ID =" + Session["id"];
-            //DataSet ds = admin.DataS(select);
-            //name.Text = ds.Tables[0].Rows[0][0].ToString() + "  欢迎你！";
-            using (var db = new blogEntities())
-            {
-                int id2 = Convert.ToInt32(Session["id"].ToString());
-                name.Text = db.users.SingleOrDefault(a => a.ID == id2).name1 + "欢迎你！";
-            }
+            string select = "SELECT name1 FROM users WHERE ID =" + Session["id"];
+            DataSet ds = admin.DataS(select);
+            name.Text = ds.Tables[0].Rows[0][0].ToString() + "  欢迎你！";
             login1.Text = "注销";
             name.Visible = true;
             enter1.Visible = true;
@@ -35,12 +30,9 @@ public partial class allpicture : System.Web.UI.Page
             password.Visible = true;
             register.Visible = true;
         }
-        using (var db = new blogEntities())
-        {
-            Repeater1.DataSource = (from it in db.picture_u
-                                    orderby it.time descending
-                                     select it).ToList();
-        }
+        string select1 = "SELECT *FROM picture_u ORDER BY time DESC";
+        DataTable dt = admin.DataT(select1);
+        Repeater1.DataSource = dt;
         Repeater1.DataBind();
     }
     protected void LinkButton2_Click(object sender, EventArgs e)
