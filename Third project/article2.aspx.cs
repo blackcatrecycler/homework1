@@ -1,4 +1,5 @@
-﻿using System;
+﻿using God_admin;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -66,8 +67,25 @@ public partial class article2 : System.Web.UI.Page
             {
                 DateTime dt = new DateTime();
                 dt = DateTime.Now;
-                string select = "INSERT INTO blog (title,describe,text,StudentID,time) VALUES(N'" + Title.Text + "',N'" + Describe.Text + "',N'" + God_admin.admin.TextC(Body.Text) + "'," + Session["ID"] + ",'" + dt.ToString() + "')";
-                int result = God_admin.admin.In(select);
+                //string select = "INSERT INTO blog (title,describe,text,StudentID,time) VALUES(N'" + Title.Text + "',N'" + Describe.Text + "',N'" + God_admin.admin.TextC(Body.Text) + "'," + Session["ID"] + ",'" + dt.ToString() + "')";
+                //int result = God_admin.admin.In(select);
+                int result = 0;
+                try
+                {
+                    using (var db = new blogEntities())
+                    {
+                        var bl = new blog();
+                        bl.title = admin.TextC(Title.Text);
+                        bl.time = dt;
+                        bl.describe = Describe.Text;
+                        bl.text = admin.TextC(Body.Text);
+                        bl.StudentID = Convert.ToInt32(Session["id"].ToString());
+                        db.blog.Add(bl);
+                        db.SaveChanges();
+                    }
+                    result = 1;
+                }
+                catch { }
                 if (result == 1)
                 {
                     Response.Write("<script>alert('发表成功');window.window.location.href='editor.aspx';</script> ");
