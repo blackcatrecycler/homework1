@@ -50,12 +50,27 @@ public partial class editor : System.Web.UI.Page
         }
         if (e.CommandName == "delete")
         {
-            string select = "DELETE FROM blog WHERE ID=" + id + "";
-            int result = admin.In(select);
+            //string select = "DELETE FROM blog WHERE ID=" + id + "";
+            //int result = admin.In(select);
+            int result =0;
+            try
+            {
+
+                using (var db = new blogEntities())
+                {
+                    int id2 = Convert.ToInt32(id);
+                    blog bl = db.blog.SingleOrDefault(a => a.ID ==id2);
+                    db.blog.Remove(bl);
+                    db.SaveChanges();
+                    result = 1;
+
+                }
+            }
+            catch { }
             if (result == 1)
             {
-                Response.Write("<script>alert('删除成功')</script>");
-                Response.Redirect(Request.Url.ToString());
+                Response.Write("<script>alert('删除成功');window.window.location.href='editor.aspx';</script>");
+               // Response.Redirect(Request.Url.ToString());
             }
             else 
             {
